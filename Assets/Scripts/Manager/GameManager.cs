@@ -1,5 +1,7 @@
 
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.EventSystems;
 // using UnityEngine.InputSystem;
 // using UnityEngine.InputSystem.Controls; // 引入新输入系统的命名空间
 
@@ -8,12 +10,24 @@ public class GameManager : SingletonManager<GameManager>
 
   [Header("UI")]
   [SerializeField] private PointToClick m_PointToClickPrefab;
+  [SerializeField] private ActionBar m_ActionBar;
 
   public Unit ActiveUnit = null;
 
   private Vector2 m_InitialTouchPosition;
 
+
+  // public Vector2 InputPosition => Input.touchCount > 0 ? Input.GetTouch(0).position : (Vector2)Input.mousePosition;
+  // public bool IsLeftClickOrTapDown => Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began);
+  // public bool IsLeftClickOrTapUp => Input.GetMouseButtonUp(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended);
+
   public bool HasActiveUnit => ActiveUnit != null;
+
+  void Start()
+  {
+    ClearActionBarUI();
+  }
+
   // old
   void Update()
   {
@@ -25,7 +39,7 @@ public class GameManager : SingletonManager<GameManager>
 
     if (Input.GetMouseButtonUp(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
     {
-      if (Vector2.Distance(m_InitialTouchPosition, inputPosition) < 10)
+      if (Vector2.Distance(m_InitialTouchPosition, inputPosition) < 5)
       {
         DetectClick(inputPosition);
       }
@@ -34,11 +48,16 @@ public class GameManager : SingletonManager<GameManager>
 
   void DetectClick(Vector2 inputPosition)
   {
-    Debug.Log(inputPosition);
+    // Debug.Log(inputPosition);
+    if (IsPointerOverUIElement())
+    {
+      Debug.Log("点击在UI上，忽略");
+      return;
+    }
 
     Vector2 worldPoint = Camera.main.ScreenToWorldPoint(inputPosition);
     RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-    if (hasClickedOnUnit(hit, out var unit))
+    if (HasClickedOnUnit(hit, out var unit))
     {
       HandleClickOnUnit(unit);
     }
@@ -48,14 +67,14 @@ public class GameManager : SingletonManager<GameManager>
     }
   }
 
-  bool hasClickedOnUnit(RaycastHit2D hit, out Unit unit)
+  bool HasClickedOnUnit(RaycastHit2D hit, out Unit unit)
   {
     if (hit.collider != null && hit.collider.TryGetComponent<Unit>(out var clickedUnit))
     {
       unit = clickedUnit;
       return true;
     }
-    
+
     unit = null;
     return false;
   }
@@ -71,6 +90,15 @@ public class GameManager : SingletonManager<GameManager>
 
   void HandleClickOnUnit(Unit unit)
   {
+    // if (HasActiveUnit)
+    // {
+    if (HasClickedOnActiveUnit(unit))
+    {
+      CancelActiveUnit();
+      return;
+    }
+    // }
+
     SelectUnit(unit);
   }
 
@@ -83,18 +111,68 @@ public class GameManager : SingletonManager<GameManager>
 
     ActiveUnit = unit;
     ActiveUnit.Select();
+    ShowUnitActions();
+  }
+
+  bool HasClickedOnActiveUnit(Unit clickedUnit)
+  {
+    return ActiveUnit != null && clickedUnit == ActiveUnit;
   }
 
   bool IsHumanoid(Unit unit)
   {
     return unit is HumanoidUnit;
   }
-  
+
+  void CancelActiveUnit()
+  {
+    ActiveUnit.UnSelect();
+    ActiveUnit = null;
+
+    ClearActionBarUI();
+  }
+
   void DisplayPointToClick(Vector2 worldPoint)
   {
     Instantiate(m_PointToClickPrefab, (Vector3)worldPoint, Quaternion.identity);
   }
 
+  void ShowUnitActions()
+  {
+    ClearActionBarUI();
+
+    var hardCodeActions = 2;
+    for (int i = 0; i < hardCodeActions; i++)
+    {
+      m_ActionBar.RegisterActionButton();
+    }
+
+    m_ActionBar.Show();
+  }
+
+  void ClearActionBarUI()
+  {
+    m_ActionBar.ClearActionButtons();
+    m_ActionBar.Hide();
+  }
+
+  bool IsPointerOverUIElement()
+  {
+    // Implement UI detection logic here
+    if (Input.touchCount > 0)
+    {
+      // Check if any touch is over a UI element
+      Touch touch = Input.GetTouch(0);
+      return EventSystem.current.IsPointerOverGameObject(touch.fingerId);
+    }
+    else
+    {
+      // Check if mouse is over a UI element
+      return EventSystem.current.IsPointerOverGameObject();
+    }
+
+    return false;
+  }
 
   // protected virtual void Awake()
   // {
