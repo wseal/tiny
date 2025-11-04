@@ -16,10 +16,7 @@ public class PlacementProcess
   {
     if (TouchUtils.TryGetHoldPosition(out var worldPosition))
     {
-        m_PlacementOutline.transform.position = new Vector3(
-          worldPosition.x,
-          worldPosition.y, 0f
-          );
+        m_PlacementOutline.transform.position = SnapToGrid(worldPosition);
     }
     // Vector3 worldPosition = TouchUtils.InputHoldWorldPosition;
     // if (worldPosition != Vector3.zero)
@@ -38,5 +35,12 @@ public class PlacementProcess
     spriteRenderer.sprite = m_BuildAction.PlacementSprite;
     spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f); // Semi-transparent
     spriteRenderer.sortingOrder = 1000; // Ensure it's rendered on top
+  }
+
+  public Vector3 SnapToGrid(Vector3 worldPostion, float gridSize = 1f)
+  {
+    float x = Mathf.Round(worldPostion.x / gridSize) * gridSize;
+    float y = Mathf.Round(worldPostion.y / gridSize) * gridSize;
+    return new Vector3(x, y, 0);
   }
 }
