@@ -14,7 +14,6 @@ public class GameManager : SingletonManager<GameManager>
 
   public Unit ActiveUnit = null;
 
-  private Vector2 m_InitialTouchPosition;
   private PlacementProcess m_PlacementProcess;
 
 
@@ -36,24 +35,10 @@ public class GameManager : SingletonManager<GameManager>
     {
       m_PlacementProcess.Update();
     }
-    else
+    else if (TouchUtils.TryGetShortClickPosition(out var inputPosition))
     {
-      var inputPosition = TouchUtils.InputPosition;
-      if (TouchUtils.IsLeftClickOrTapDown)
-      {
-        m_InitialTouchPosition = inputPosition;
-      }
-
-      if (TouchUtils.IsLeftClickOrTapUp)
-      {
-        if (Vector2.Distance(m_InitialTouchPosition, inputPosition) < 5)
-        {
-          DetectClick(inputPosition);
-        }
-      }
+      DetectClick(inputPosition);
     }
-
-
 
     // Vector2 inputPosition = Input.touchCount > 0 ? Input.GetTouch(0).position : Input.mousePosition;
     // if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
@@ -81,7 +66,7 @@ public class GameManager : SingletonManager<GameManager>
   void DetectClick(Vector2 inputPosition)
   {
     // Debug.Log(inputPosition);
-    if (IsPointerOverUIElement())
+    if (TouchUtils.IsPointerOverUIElement())
     {
       // Debug.Log("点击在UI上,忽略");
       return;
@@ -196,22 +181,6 @@ public class GameManager : SingletonManager<GameManager>
   {
     m_ActionBar.ClearActionButtons();
     m_ActionBar.Hide();
-  }
-
-  bool IsPointerOverUIElement()
-  {
-    // Implement UI detection logic here
-    if (Input.touchCount > 0)
-    {
-      // Check if any touch is over a UI element
-      Touch touch = Input.GetTouch(0);
-      return EventSystem.current.IsPointerOverGameObject(touch.fingerId);
-    }
-    else
-    {
-      // Check if mouse is over a UI element
-      return EventSystem.current.IsPointerOverGameObject();
-    }
   }
 
   // protected virtual void Awake()

@@ -14,14 +14,21 @@ public class PlacementProcess
 
   public void Update()
   {
-    Vector3 worldPosition = TouchUtils.InputHoldWorldPosition;
-    if (worldPosition != Vector3.zero)
+    if (TouchUtils.TryGetHoldPosition(out var worldPosition))
     {
-      m_PlacementOutline.transform.position = new Vector3(
-        worldPosition.x,
-        worldPosition.y, 0f
-        );
+        m_PlacementOutline.transform.position = new Vector3(
+          worldPosition.x,
+          worldPosition.y, 0f
+          );
     }
+    // Vector3 worldPosition = TouchUtils.InputHoldWorldPosition;
+    // if (worldPosition != Vector3.zero)
+    // {
+    //   m_PlacementOutline.transform.position = new Vector3(
+    //     worldPosition.x,
+    //     worldPosition.y, 0f
+    //     );
+    // }
   }
 
   public void ShowPlacementOutline()
