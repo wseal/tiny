@@ -2,6 +2,7 @@ using UnityEngine;
 
 public abstract class Unit: MonoBehaviour
 {
+  [SerializeField] private ActionSO[] m_Actions;
 
   // [SerializeField]
   // private Material m_HighlightMaterial; // set from unity
@@ -14,6 +15,7 @@ public abstract class Unit: MonoBehaviour
   protected Material m_OriginalMaterial;
   protected Material m_HighlightMaterial; // load from resources
 
+  public ActionSO[] Actions => m_Actions;
   void Awake()
   {
     if (TryGetComponent<Animator>(out var animator))

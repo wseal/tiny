@@ -15,6 +15,7 @@ public class GameManager : SingletonManager<GameManager>
   public Unit ActiveUnit = null;
 
   private Vector2 m_InitialTouchPosition;
+  private PlacementProcess m_PlacementProcess;
 
 
   // public Vector2 InputPosition => Input.touchCount > 0 ? Input.GetTouch(0).position : (Vector2)Input.mousePosition;
@@ -31,19 +32,50 @@ public class GameManager : SingletonManager<GameManager>
   // old
   void Update()
   {
-    Vector2 inputPosition = Input.touchCount > 0 ? Input.GetTouch(0).position : Input.mousePosition;
-    if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+    if (m_PlacementProcess != null)
     {
-      m_InitialTouchPosition = inputPosition;
+      m_PlacementProcess.Update();
     }
-
-    if (Input.GetMouseButtonUp(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
+    else
     {
-      if (Vector2.Distance(m_InitialTouchPosition, inputPosition) < 5)
+      var inputPosition = TouchUtils.InputPosition;
+      if (TouchUtils.IsLeftClickOrTapDown)
       {
-        DetectClick(inputPosition);
+        m_InitialTouchPosition = inputPosition;
+      }
+
+      if (TouchUtils.IsLeftClickOrTapUp)
+      {
+        if (Vector2.Distance(m_InitialTouchPosition, inputPosition) < 5)
+        {
+          DetectClick(inputPosition);
+        }
       }
     }
+
+
+
+    // Vector2 inputPosition = Input.touchCount > 0 ? Input.GetTouch(0).position : Input.mousePosition;
+    // if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+    // {
+    //   m_InitialTouchPosition = inputPosition;
+    // }
+
+    // if (Input.GetMouseButtonUp(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
+    // {
+    //   if (Vector2.Distance(m_InitialTouchPosition, inputPosition) < 5)
+    //   {
+    //     DetectClick(inputPosition);
+    //   }
+    // }
+  }
+
+  public void StartBuildAction(BuildActionSO buildAction)
+  {
+    // Debug.Log($"Start Build Action: {buildAction.ActionName}");
+    // Implement build action initiation logic here
+    m_PlacementProcess = new PlacementProcess(buildAction);
+    m_PlacementProcess.ShowPlacementOutline();
   }
 
   void DetectClick(Vector2 inputPosition)
@@ -51,7 +83,7 @@ public class GameManager : SingletonManager<GameManager>
     // Debug.Log(inputPosition);
     if (IsPointerOverUIElement())
     {
-      Debug.Log("点击在UI上，忽略");
+      // Debug.Log("点击在UI上,忽略");
       return;
     }
 
@@ -111,7 +143,7 @@ public class GameManager : SingletonManager<GameManager>
 
     ActiveUnit = unit;
     ActiveUnit.Select();
-    ShowUnitActions();
+    ShowUnitActions(unit);
   }
 
   bool HasClickedOnActiveUnit(Unit clickedUnit)
@@ -137,15 +169,25 @@ public class GameManager : SingletonManager<GameManager>
     Instantiate(m_PointToClickPrefab, (Vector3)worldPoint, Quaternion.identity);
   }
 
-  void ShowUnitActions()
+  void ShowUnitActions(Unit unit)
   {
     ClearActionBarUI();
 
-    var hardCodeActions = 2;
-    for (int i = 0; i < hardCodeActions; i++)
+    if (unit.Actions.Length == 0)
     {
-      m_ActionBar.RegisterActionButton();
+      return;
     }
+
+    // var hardCodeActions = 2;
+    // for (int i = 0; i < hardCodeActions; i++)
+    // {
+    //   m_ActionBar.RegisterActionButton();
+    // }
+
+    foreach (var action in unit.Actions)
+    {
+      m_ActionBar.RegisterActionButton(action.Icon, ()=>action.Execute(this));
+    } 
 
     m_ActionBar.Show();
   }
@@ -170,8 +212,6 @@ public class GameManager : SingletonManager<GameManager>
       // Check if mouse is over a UI element
       return EventSystem.current.IsPointerOverGameObject();
     }
-
-    return false;
   }
 
   // protected virtual void Awake()

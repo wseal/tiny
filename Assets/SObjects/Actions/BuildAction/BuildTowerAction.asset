@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47947d635f6614e02878f9ce6303316f, type: 3}
+  m_Name: BuildTowerAction
+  m_EditorClassIdentifier: Assembly-CSharp::BuildActionSO
+  ActionName: BuildTower
+  Icon: {fileID: -4866884309602757033, guid: 2502fcc5be4f3477bb79df21e3e4bb05, type: 3}
+  Guid: 4013a7e6-9c3f-40ef-b64d-09387b92c78f
+  m_PlacementSprite: {fileID: 21300000, guid: 4c05964a4d26346b6a7e654478cedaa5, type: 3}
+  m_FundationSprite: {fileID: 0}
+  m_CompletionSprite: {fileID: 0}
+  m_GoldCost: 0
+  m_WoodCost: 0

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4c05964a4d26346b6a7e654478cedaa5
+guid: 2502fcc5be4f3477bb79df21e3e4bb05
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -46,13 +46,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 64
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 0, y: 29, z: 0, w: 50}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -103,12 +103,12 @@ TextureImporter:
       name: Tower_Blue_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 20
-        width: 116
-        height: 185
+        x: 5
+        y: 31
+        width: 118
+        height: 174
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,8 +125,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    spriteID: 4b47343e170a949f386a24702ab90daa
+    internalID: 380053640
     vertices: []
     indices: 
     edges: []

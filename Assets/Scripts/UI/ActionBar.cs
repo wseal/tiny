@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Events;
 
 public class ActionBar : MonoBehaviour
 {
@@ -19,11 +20,11 @@ public class ActionBar : MonoBehaviour
     // Hide();
   }
 
-  public void RegisterActionButton(/*Sprite iconSprite*/)
+  public void RegisterActionButton(Sprite icon, UnityAction action)
   {
     ActionButton newButton = Instantiate(m_ActionButtonPrefab, transform);
     // 设置按钮图标
-    // newButton.SetIcon(iconSprite);
+    newButton.Init(icon, action);
     m_ActionButtons.Add(newButton);
   }
 
