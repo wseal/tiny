@@ -18,6 +18,10 @@ public class PlacementProcess
 
   private Color m_HighlightColor = new Color(0f, 0.8f, 1f, 0.4f); // Semi-transparent green
   private Color m_BlockedColor = new Color(1f, 0.4f, 0f, 0.8f); // Semi-transparent red
+  public BuildActionSO BuildAction => m_BuildAction;
+  public int GoldCost => m_BuildAction.GoldCost;
+  public int WoodCost => m_BuildAction.WoodCost;  
+  
   public PlacementProcess(BuildActionSO buildAction, Tilemap walkTilemap, Tilemap overlayTilemap, Tilemap[] unreachableTilemaps)
   {
     m_PlaceholderTileSprite = Resources.Load<Sprite>("Images/PlaceholderTileSprite");
@@ -57,6 +61,40 @@ public class PlacementProcess
     spriteRenderer.sprite = m_BuildAction.PlacementSprite;
     spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f); // Semi-transparent
     spriteRenderer.sortingOrder = 1000; // Ensure it's rendered on top
+  }
+
+  public void Cleanup()
+  {
+    if (m_PlacementOutline != null)
+    {
+      GameObject.Destroy(m_PlacementOutline);
+      m_PlacementOutline = null;
+    }
+    ClearHighlightTiles();
+  }
+
+  public bool TryFinalizePlacement(out Vector3 buildPositions)
+  {
+    if (IsPlacementAreaValid())
+    {
+      ClearHighlightTiles();
+      buildPositions = m_PlacementOutline.transform.position;
+      Object.Destroy(m_PlacementOutline);
+      return true;
+    }
+    
+    buildPositions = Vector3.zero;
+    return false;
+  }
+
+  bool IsPlacementAreaValid()
+  {
+    foreach (var pos in m_HighlightPositions)
+    {
+      if (!CanPlaceTile(pos)) return false;
+    }
+
+    return true;
   }
 
   public Vector3 SnapToGrid(Vector3 worldPostion, float gridSize = 1f)

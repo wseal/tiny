@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class ConfirmationBar : MonoBehaviour
 {
+  [SerializeField] private ResourceRequirementsDisplay m_ResourceDisplay;
   [SerializeField] private Button m_ConfirmButton;
   [SerializeField] private Button m_CancelButton;
 
@@ -15,9 +16,10 @@ public class ConfirmationBar : MonoBehaviour
     m_CancelButton.onClick.RemoveAllListeners();
   }
 
-  public void Show()
+  public void Show(int goldCost, int woodCost)
   {
     gameObject.SetActive(true);
+    m_ResourceDisplay.Show(goldCost, woodCost);
   }
 
   public void Hide()
