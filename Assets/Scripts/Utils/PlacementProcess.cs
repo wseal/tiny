@@ -17,7 +17,7 @@ public class PlacementProcess
   private Sprite m_PlaceholderTileSprite;
 
   private Color m_HighlightColor = new Color(0f, 0.8f, 1f, 0.4f); // Semi-transparent green
-  private Color m_BlockedColor = new Color(1f, 0f, 0f, 0.8f); // Semi-transparent red
+  private Color m_BlockedColor = new Color(1f, 0.4f, 0f, 0.8f); // Semi-transparent red
   public PlacementProcess(BuildActionSO buildAction, Tilemap walkTilemap, Tilemap overlayTilemap, Tilemap[] unreachableTilemaps)
   {
     m_PlaceholderTileSprite = Resources.Load<Sprite>("Images/PlaceholderTileSprite");
@@ -119,7 +119,9 @@ public class PlacementProcess
 
   bool CanPlaceTile(Vector3Int position)
   {
-    return m_WalkableTilemap.HasTile(position) && !IsInUnreachableTilemap(position);
+    return m_WalkableTilemap.HasTile(position) &&
+     !IsInUnreachableTilemap(position) &&
+     !IsBlockedByGameobject(position);
   }
 
   bool IsInUnreachableTilemap(Vector3Int position)
@@ -129,6 +131,26 @@ public class PlacementProcess
       if (tilemap.HasTile(position)) return true;
     }
 
+    return false;
+  }
+
+  bool IsBlockedByGameobject(Vector3Int tilePosition)
+  {
+    Vector3 tileSize = m_WalkableTilemap.cellSize;
+    Collider2D[] colliders = Physics2D.OverlapBoxAll(tilePosition + tileSize / 2, tileSize * 0.95f, 0f);
+
+    foreach (var collider in colliders)
+    {
+      var layer = collider.gameObject.layer;
+      if (layer == LayerMask.NameToLayer("Player"))
+      {
+        return true;
+      }
+      // if (collider.gameObject.CompareTag("Building") || collider.gameObject.CompareTag("Unit"))
+      // {
+      //   return true;
+      // }
+    }
     return false;
   }
 }
