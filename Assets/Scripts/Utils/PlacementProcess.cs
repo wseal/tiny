@@ -34,6 +34,8 @@ public class PlacementProcess
       HighlightTiles(m_PlacementOutline.transform.position);
     }
 
+    if (TouchUtils.IsPointerOverUIElement()) return;
+
     if (TouchUtils.TryGetHoldPosition(out var worldPosition))
     {
         m_PlacementOutline.transform.position = SnapToGrid(worldPosition);

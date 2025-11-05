@@ -14,6 +14,7 @@ public class GameManager : SingletonManager<GameManager>
   [Header("UI")]
   [SerializeField] private PointToClick m_PointToClickPrefab;
   [SerializeField] private ActionBar m_ActionBar;
+  [SerializeField] private ConfirmationBar m_ConfirmationBar;
 
   public Unit ActiveUnit = null;
 
@@ -60,15 +61,17 @@ public class GameManager : SingletonManager<GameManager>
 
   public void StartBuildAction(BuildActionSO buildAction)
   {
-    // Debug.Log($"Start Build Action: {buildAction.ActionName}");
-    // Implement build action initiation logic here
+    if (m_PlacementProcess != null) return;
+
     m_PlacementProcess = new PlacementProcess(
       buildAction,
       m_WalkableTilemap,
       m_OverlayTilemap,
       m_UnreachableTilemaps);
-      
+
     m_PlacementProcess.ShowPlacementOutline();
+    m_ConfirmationBar.Show();
+    m_ConfirmationBar.SetupHooks(ConfirmBuildPlacement, CancelBuildPlacement);
   }
 
   void DetectClick(Vector2 inputPosition)
@@ -189,6 +192,16 @@ public class GameManager : SingletonManager<GameManager>
   {
     m_ActionBar.ClearActionButtons();
     m_ActionBar.Hide();
+  }
+
+  void ConfirmBuildPlacement()
+  {
+    Debug.Log("Confirm Build Placement");
+  }
+  
+  void CancelBuildPlacement()
+  {
+    Debug.Log("Cancel Build Placement");
   }
 
   // protected virtual void Awake()
