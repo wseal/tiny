@@ -1,12 +1,14 @@
 
-using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
 // using UnityEngine.InputSystem;
 // using UnityEngine.InputSystem.Controls; // 引入新输入系统的命名空间
 
 public class GameManager : SingletonManager<GameManager>
 {
+  [Header("Tilemaps")]
+  [SerializeField] private Tilemap m_WalkableTilemap;
+  [SerializeField] private Tilemap m_OverlayTilemap;
 
   [Header("UI")]
   [SerializeField] private PointToClick m_PointToClickPrefab;
@@ -59,7 +61,7 @@ public class GameManager : SingletonManager<GameManager>
   {
     // Debug.Log($"Start Build Action: {buildAction.ActionName}");
     // Implement build action initiation logic here
-    m_PlacementProcess = new PlacementProcess(buildAction);
+    m_PlacementProcess = new PlacementProcess(buildAction, m_WalkableTilemap, m_OverlayTilemap);
     m_PlacementProcess.ShowPlacementOutline();
   }
 
