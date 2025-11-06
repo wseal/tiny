@@ -1,9 +1,13 @@
 
+using NUnit.Framework;
 using UnityEngine;
 
 public class BuildingProcess
 {
   private BuildActionSO m_BuildAction;
+  private WorkerUnit m_Worker;
+
+  public bool HasActiveWorker => m_Worker != null;
 
   public BuildingProcess(BuildActionSO buildAction, Vector3 placementPosition, WorkerUnit worker)
   {
@@ -24,13 +28,29 @@ public class BuildingProcess
     // renderer.sortingOrder = 25;
     // structGo.transform.position = placementPosition;
 
-    worker.MoveTo(placementPosition);
-    worker.SetTask(UnitTask.Build);
-    worker.SetTarget(structure);
+    worker.SendToBuild(structure);
   }
-  
+
   public void Update()
   {
     // Update building progress logic here
+    if (HasActiveWorker)
+    {
+
+    }
   }
+
+  public void AddWorker(WorkerUnit worker)
+  {
+    if (HasActiveWorker) return;
+    
+    Debug.Log("Worker add from build process");
+    m_Worker = worker;
+  }
+  
+  public void RemoveWorker()
+  {
+    Debug.Log("Worker removed from build process");
+    m_Worker = null;
+  } 
 }

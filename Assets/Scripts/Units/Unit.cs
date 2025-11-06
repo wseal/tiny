@@ -30,6 +30,7 @@ public abstract class Unit : MonoBehaviour
   public Unit Target { get; protected set; }
   public ActionSO[] Actions => m_Actions;
   public SpriteRenderer SpriteRenderer => m_SpriteRenderer;
+  public bool HasTarget=> Target != null;
   void Awake()
   {
     if (TryGetComponent<Animator>(out var animator))
@@ -68,6 +69,7 @@ public abstract class Unit : MonoBehaviour
     m_SpriteRenderer.flipX = direction.x < 0;
 
     m_AIPown.SetDestination(destination);
+    OnSetDestination(destination);
   }
 
   public void Select()
@@ -82,10 +84,15 @@ public abstract class Unit : MonoBehaviour
     IsTargeted = false;
   }
 
+  protected virtual void OnSetDestination(Vector3 destination)
+  {
+    // To be implemented in derived classes
+  }
+  
   protected virtual void OnSetTask(UnitTask oldTask, UnitTask newTask)
   {
     // To be implemented in derived classes
-    CurrentTask = newTask; 
+    CurrentTask = newTask;
   }
 
   protected virtual void OnSetState(UnitState oldState, UnitState newState)

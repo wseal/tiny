@@ -13,9 +13,18 @@ public class StructureUnit : Unit
       m_BuildingProcess.Update();
     }
   }
-  
+
   public void RegisterProcess(BuildingProcess process)
   {
     m_BuildingProcess = process;
+  }
+  
+  public void AssignWorkerToBuildProcess(WorkerUnit worker)
+  {
+    m_BuildingProcess?.AddWorker(worker);
+  }
+ public void UnassignWorkerFromBuildProcess()
+  {
+    m_BuildingProcess?.RemoveWorker();
   }
 }

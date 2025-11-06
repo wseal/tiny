@@ -13,6 +13,19 @@ public class WorkerUnit : HumanoidUnit
     }
   }
 
+  protected override void OnSetDestination(Vector3 destination)
+  {
+    base.OnSetDestination(destination);
+    ResetState();
+  }
+
+  public void SendToBuild(StructureUnit structure)
+  {
+    MoveTo(structure.transform.position);
+    SetTask(UnitTask.Build);
+    SetTarget(structure);
+  }
+  
   void CheckForCloseObjects()
   {
     var detectedObjects = RunProximityObjectDetection();
@@ -29,9 +42,28 @@ public class WorkerUnit : HumanoidUnit
       }
     }
   }
-  
+
   void StartBuilding(StructureUnit structure)
   {
-    // Start building logic
+    structure.AssignWorkerToBuildProcess(this);
   }
+
+  void ResetState()
+  {
+    SetTask(UnitTask.None);
+    if (HasTarget)
+    {
+      ClearTarget();
+    }
+  }
+  
+  void ClearTarget()
+  {
+    if (Target is StructureUnit st)
+    {
+      // (Target as StructureUnit).UnassignWorkerFromBuildProcess();
+      st.UnassignWorkerFromBuildProcess();
+    }
+    SetTarget(null);
+  } 
 }
