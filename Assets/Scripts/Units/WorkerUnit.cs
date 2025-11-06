@@ -37,16 +37,21 @@ public class WorkerUnit : HumanoidUnit
 
   void StartBuilding(StructureUnit structure)
   {
+    SetState(UnitState.Building);
+    m_Animator.SetBool("IsBuilding", true);
     structure.AssignWorkerToBuildProcess(this);
   }
 
   void ResetState()
   {
     SetTask(UnitTask.None);
+
     if (HasTarget)
     {
       ClearTarget();
     }
+
+    m_Animator.SetBool("IsBuilding", false);
   }
 
   void ClearTarget()
