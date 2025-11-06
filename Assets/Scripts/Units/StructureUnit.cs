@@ -1,6 +1,6 @@
 
 
-public class StructureUnit : HumanoidUnit
+public class StructureUnit : Unit
 {
     // Structure-specific implementation
 }

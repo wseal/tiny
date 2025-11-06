@@ -16,6 +16,7 @@ public abstract class Unit: MonoBehaviour
   protected Material m_HighlightMaterial; // load from resources
 
   public ActionSO[] Actions => m_Actions;
+  public SpriteRenderer SpriteRenderer => m_SpriteRenderer;
   void Awake()
   {
     if (TryGetComponent<Animator>(out var animator))

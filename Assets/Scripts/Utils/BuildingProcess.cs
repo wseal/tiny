@@ -9,10 +9,18 @@ public class BuildingProcess
   {
     m_BuildAction = buildAction;
 
-    var structGo = new GameObject(m_BuildAction.ActionName);
-    var renderer = structGo.AddComponent<SpriteRenderer>();
-    renderer.sprite = m_BuildAction.FundationSprite;
-    renderer.sortingOrder = 25;
-    structGo.transform.position = placementPosition;
+    var structure = Object.Instantiate(
+      m_BuildAction.StructurePrefab,
+      placementPosition,
+      Quaternion.identity
+    );
+    
+    structure.SpriteRenderer.sprite = m_BuildAction.FundationSprite;
+    // structure.transform.position = placementPosition;
+    // var structGo = new GameObject(m_BuildAction.ActionName);
+    // var renderer = structGo.AddComponent<SpriteRenderer>();
+    // renderer.sprite = m_BuildAction.FundationSprite;
+    // renderer.sortingOrder = 25;
+    // structGo.transform.position = placementPosition;
   }
 }
