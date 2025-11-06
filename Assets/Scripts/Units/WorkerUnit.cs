@@ -15,10 +15,14 @@ public class WorkerUnit : HumanoidUnit
 
   protected override void OnSetDestination(Vector3 destination)
   {
-    base.OnSetDestination(destination);
+    // base.OnSetDestination(destination);
     ResetState();
   }
 
+  public void OnBuildingCompleted()
+  {
+    ResetState();
+  } 
   public void SendToBuild(StructureUnit structure)
   {
     MoveTo(structure.transform.position);

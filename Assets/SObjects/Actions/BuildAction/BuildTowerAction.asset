@@ -16,9 +16,10 @@ MonoBehaviour:
   Icon: {fileID: -4866884309602757033, guid: 2502fcc5be4f3477bb79df21e3e4bb05, type: 3}
   Guid: 4013a7e6-9c3f-40ef-b64d-09387b92c78f
   m_StructurePrefab: {fileID: 2469957651712753281, guid: 0119116cbbba04c33967830f45e7836e, type: 3}
+  m_ConstructionTime: 5
   m_PlacementSprite: {fileID: 21300000, guid: 4c05964a4d26346b6a7e654478cedaa5, type: 3}
   m_FundationSprite: {fileID: 21300000, guid: 6a41e77c3d089482ca4096de9172ecb1, type: 3}
-  m_CompletionSprite: {fileID: 0}
+  m_CompletionSprite: {fileID: 21300000, guid: 4c05964a4d26346b6a7e654478cedaa5, type: 3}
   m_BuildingSize: {x: 2, y: 3, z: 0}
   m_OriginOffset: {x: -1, y: -2, z: 0}
   m_GoldCost: 800
