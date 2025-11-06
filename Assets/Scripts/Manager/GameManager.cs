@@ -211,10 +211,11 @@ public class GameManager : SingletonManager<GameManager>
     if (m_PlacementProcess.TryFinalizePlacement(out var buildPosition))
     {
       m_ConfirmationBar.Hide();
-      var build = new BuildingProcess(m_PlacementProcess.BuildAction, buildPosition);
+      var build = new BuildingProcess(m_PlacementProcess.BuildAction, buildPosition, (WorkerUnit)ActiveUnit);
       // m_PlacementProcess.Cleanup();
 
-      ActiveUnit.MoveTo(buildPosition);
+      // ActiveUnit.MoveTo(buildPosition);
+      // ActiveUnit.SetTask(UnitTask.Build);
       m_PlacementProcess = null;
     }
     else
@@ -253,6 +254,12 @@ public class GameManager : SingletonManager<GameManager>
   {
     GUI.Label(new Rect(10, 10, 200, 20), $"Gold: {m_Gold}", new GUIStyle { fontSize = 20 });
     GUI.Label(new Rect(10, 30, 200, 20), $"Wood: {m_Wood}", new GUIStyle { fontSize = 20 });
+
+    if (ActiveUnit != null)
+    {
+      GUI.Label(new Rect(10, 50, 400, 20), $"State {ActiveUnit.CurrentState.ToString()}", new GUIStyle { fontSize = 20 });
+      GUI.Label(new Rect(10, 70, 400, 20), $"Task {ActiveUnit.CurrentTask.ToString()}", new GUIStyle { fontSize = 20 });
+    }
   }
 
   // protected virtual void Awake()
