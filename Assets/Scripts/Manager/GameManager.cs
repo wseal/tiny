@@ -1,6 +1,5 @@
 
 using UnityEngine;
-using UnityEngine.Tilemaps;
 // using UnityEngine.InputSystem;
 // using UnityEngine.InputSystem.Controls; // 引入新输入系统的命名空间
 
@@ -10,11 +9,6 @@ public enum ClickType
 }
 public class GameManager : SingletonManager<GameManager>
 {
-  [Header("Tilemaps")]
-  [SerializeField] private Tilemap m_WalkableTilemap;
-  [SerializeField] private Tilemap m_OverlayTilemap;
-  [SerializeField] private Tilemap[] m_UnreachableTilemaps;
-
   [Header("UI")]
   [SerializeField] private PointToClick m_PointToMovePrefab;
   [SerializeField] private PointToClick m_PointToBuildPrefab;
@@ -75,11 +69,10 @@ public class GameManager : SingletonManager<GameManager>
   {
     if (m_PlacementProcess != null) return;
 
+    var tilemapManager = TilemapManager.Get();
     m_PlacementProcess = new PlacementProcess(
       buildAction,
-      m_WalkableTilemap,
-      m_OverlayTilemap,
-      m_UnreachableTilemaps);
+      tilemapManager);
 
     m_PlacementProcess.ShowPlacementOutline();
     m_ConfirmationBar.Show(buildAction.GoldCost, buildAction.WoodCost);

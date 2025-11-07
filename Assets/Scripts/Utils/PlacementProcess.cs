@@ -1,7 +1,3 @@
-
-
-
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -11,10 +7,8 @@ public class PlacementProcess
   private BuildActionSO m_BuildAction;
 
   private Vector3Int[] m_HighlightPositions;
-  private Tilemap m_WalkableTilemap;
-  private Tilemap m_OverlayTilemap;
-  private Tilemap[] m_UnreachableTilemaps;
   private Sprite m_PlaceholderTileSprite;
+  private TilemapManager m_TilemapManager;
 
   private Color m_HighlightColor = new Color(0f, 0.8f, 1f, 0.4f); // Semi-transparent green
   private Color m_BlockedColor = new Color(1f, 0.4f, 0f, 0.8f); // Semi-transparent red
@@ -22,13 +16,11 @@ public class PlacementProcess
   public int GoldCost => m_BuildAction.GoldCost;
   public int WoodCost => m_BuildAction.WoodCost;  
   
-  public PlacementProcess(BuildActionSO buildAction, Tilemap walkTilemap, Tilemap overlayTilemap, Tilemap[] unreachableTilemaps)
+  public PlacementProcess(BuildActionSO buildAction, TilemapManager mgr)
   {
     m_PlaceholderTileSprite = Resources.Load<Sprite>("Images/PlaceholderTileSprite");
     m_BuildAction = buildAction;
-    m_WalkableTilemap = walkTilemap;
-    m_OverlayTilemap = overlayTilemap;
-    m_UnreachableTilemaps = unreachableTilemaps;
+    m_TilemapManager = mgr;
   }
 
   public void Update()
@@ -91,7 +83,7 @@ public class PlacementProcess
   {
     foreach (var pos in m_HighlightPositions)
     {
-      if (!CanPlaceTile(pos)) return false;
+      if (!m_TilemapManager.CanPlaceTile(pos)) return false;
     }
 
     return true;
@@ -123,7 +115,7 @@ public class PlacementProcess
     {
       var tile = ScriptableObject.CreateInstance<Tile>();
       tile.sprite = m_PlaceholderTileSprite;
-      if (CanPlaceTile(pos))
+      if (m_TilemapManager.CanPlaceTile(pos))
       {
         tile.color = m_HighlightColor;
       } else
@@ -131,7 +123,7 @@ public class PlacementProcess
         tile.color = m_BlockedColor;
       }
       
-      m_OverlayTilemap.SetTile(pos, tile);
+      m_TilemapManager.SetTileOverlay(pos, tile);
       // m_OverlayTilemap.SetTileFlags(pos, TileFlags.None);
       // m_OverlayTilemap.SetColor(pos, Color.green);
       // if (m_WalkableTilemap.HasTile(pos))
@@ -148,49 +140,12 @@ public class PlacementProcess
 
     foreach (var pos in m_HighlightPositions)
     {
-      m_OverlayTilemap.SetTile(pos, null);
+      m_TilemapManager.SetTileOverlay(pos, null);
       // if (m_WalkableTilemap.HasTile(pos))
       // {
       //   m_WalkableTilemap.SetTileFlags(pos, TileFlags.None);
       //   m_WalkableTilemap.SetColor(pos, Color.white);
       // }
     }
-  }
-
-  bool CanPlaceTile(Vector3Int position)
-  {
-    return m_WalkableTilemap.HasTile(position) &&
-     !IsInUnreachableTilemap(position) &&
-     !IsBlockedByGameobject(position);
-  }
-
-  bool IsInUnreachableTilemap(Vector3Int position)
-  {
-    foreach (var tilemap in m_UnreachableTilemaps)
-    {
-      if (tilemap.HasTile(position)) return true;
-    }
-
-    return false;
-  }
-
-  bool IsBlockedByGameobject(Vector3Int tilePosition)
-  {
-    Vector3 tileSize = m_WalkableTilemap.cellSize;
-    Collider2D[] colliders = Physics2D.OverlapBoxAll(tilePosition + tileSize / 2, tileSize * 0.95f, 0f);
-
-    foreach (var collider in colliders)
-    {
-      var layer = collider.gameObject.layer;
-      if (layer == LayerMask.NameToLayer("Player"))
-      {
-        return true;
-      }
-      // if (collider.gameObject.CompareTag("Building") || collider.gameObject.CompareTag("Unit"))
-      // {
-      //   return true;
-      // }
-    }
-    return false;
   }
 }
