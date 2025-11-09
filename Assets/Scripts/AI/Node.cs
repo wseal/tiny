@@ -8,7 +8,7 @@ public class Node
   public float centerY;
   public bool walkable;
 
-  public Node (Vector3Int leftBottom, Vector3 cellSize, bool walkable)
+  public Node(Vector3Int leftBottom, Vector3 cellSize, bool walkable)
   {
     x = leftBottom.x;
     y = leftBottom.y;
@@ -16,8 +16,12 @@ public class Node
     Vector3 halfSize = cellSize / 2;
     var center = leftBottom + halfSize;
     centerX = center.x;
-    centerY = center.y; 
-    
+    centerY = center.y;
+
     this.walkable = walkable;
+  }
+  public override string ToString()
+  {
+    return $"({x}, {y})";
   }
 }

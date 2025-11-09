@@ -22,7 +22,7 @@ public class Pathfinding
     m_Grid = new Node[m_Width, m_Height];
     InitializeGrid();
   }
-  
+
   void InitializeGrid()
   {
     Vector3 cellSize = m_TilemapManager.PathfindingTilemap.cellSize;
@@ -40,9 +40,27 @@ public class Pathfinding
         var isWalkable = m_TilemapManager.CanWalkAtTile(leftBottomPos);
         var node = new Node(leftBottomPos, cellSize, isWalkable);
         m_Grid[x, y] = node;
-
-        Debug.Log($"Node at [{x}, {y}] --> ({node.x}, {node.y}).");
+        // Debug.Log($"Node at [{x}, {y}] --> ({node.x}, {node.y}).");
       }
     }
+  }
+
+  public void FindPath(Vector3 startPosition, Vector3 destinationPosition)
+  {
+
+
+  }
+
+  Node FindNode(Vector3 position)
+  {
+    int x = Mathf.FloorToInt(position.x) - m_GridOffset.x;
+    int y = Mathf.FloorToInt(position.y) - m_GridOffset.y;
+
+    if (x >= 0 && x < m_Width && y >= 0 && y < m_Height)
+    {
+      return m_Grid[x, y];
+    }
+
+    return null;
   }
 }
