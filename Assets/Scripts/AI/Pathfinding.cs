@@ -1,11 +1,12 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Pathfinding
 {
   private int m_Width;
-  private int m_Height; 
+  private int m_Height;
   private Vector3Int m_GridOffset;
   private Node[,] m_Grid;
   private TilemapManager m_TilemapManager;
@@ -46,7 +47,7 @@ public class Pathfinding
     }
   }
 
-  public void FindPath(Vector3 startPosition, Vector3 destinationPosition)
+  public List<Node> FindPath(Vector3 startPosition, Vector3 destinationPosition)
   {
     var startNode = FindNode(startPosition);
     var endNode = FindNode(destinationPosition);
@@ -54,7 +55,7 @@ public class Pathfinding
     if (startNode == null || endNode == null)
     {
       Debug.Log("Can't find the path!");
-      return;
+      return new List<Node>();
     }
 
     List<Node> openList = new();
@@ -67,13 +68,90 @@ public class Pathfinding
       var currNode = GetLowestFCostNode(openList);
       if (currNode == endNode)
       {
-        Debug.Log("Path Found!!!");
-        return;
+        var path = RetracePath(startNode, endNode);
+        Debug.Log("Path Found--->" + string.Join(", ", path));
+        return path;
       }
 
       openList.Remove(currNode);
       closeList.Add(currNode);
+
+      var neighbors = GetNeighbors(currNode);
+      // Debug.Log("neighbor " + String.Join(", ", neighbors));
+      foreach (Node neighbor in neighbors)
+      {
+        if (!neighbor.walkable || closeList.Contains(neighbor)) continue;
+
+        float tentativeG = currNode.gCost + GetDistance(currNode, neighbor);
+        if (tentativeG < neighbor.gCost || !openList.Contains(neighbor))
+        {
+          neighbor.gCost = tentativeG;
+          neighbor.hCost = GetDistance(neighbor, endNode);
+          neighbor.fCost = neighbor.gCost + neighbor.hCost;
+          neighbor.parent = currNode;
+
+          if (!openList.Contains(neighbor))
+          {
+            openList.Add(neighbor);
+          }
+        }
+      }
     }
+
+    Debug.Log("No Path Found");
+    return new List<Node>();
+  }
+
+  List<Node> RetracePath(Node startNode, Node endNode)
+  {
+    List<Node> path = new();
+    Node p = endNode;
+    while (p != startNode)
+    {
+      path.Add(p);
+      p = p.parent;
+    }
+
+    path.Add(startNode);
+    path.Reverse();
+
+    return path;
+  }
+
+  float GetDistance(Node nodeA, Node nodeb)
+  {
+    int disX = Mathf.Abs(nodeA.x - nodeb.x);
+    int disY = Mathf.Abs(nodeA.y - nodeb.y);
+
+    if (disX > disY)
+    {
+      return 14 * disY + 10 * (disX - disY);
+    }
+
+    return 14 * disX + 10 * (disY - disX);
+  }
+
+  List<Node> GetNeighbors(Node node)
+  {
+    List<Node> neighbors = new();
+    for (int x = -1; x <= 1; x++)
+    {
+      for (int y = -1; y <= 1; y++)
+      {
+        if (x == 0 && y == 0) continue;
+
+        int checkX = node.x + x - m_GridOffset.x;
+        int checkY = node.y + y - m_GridOffset.y;
+        if (checkX >= 0 && checkX < m_Width && checkY >= 0 && checkY < m_Height)
+        {
+          var neighbor = m_Grid[checkX, checkY];
+          neighbors.Add(neighbor);
+        }
+
+      }
+    }
+
+    return neighbors;
   }
 
   Node GetLowestFCostNode(List<Node> openList)
@@ -89,7 +167,6 @@ public class Pathfinding
 
     return n;
   }
-
 
   Node FindNode(Vector3 position)
   {
