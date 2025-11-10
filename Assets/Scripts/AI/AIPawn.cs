@@ -6,7 +6,7 @@ public class AIPawn : MonoBehaviour
 {
   private float m_Speed = 3f;
 
-  private List<Node> m_CurrentPath = new();
+  private List<Vector3> m_CurrentPath = new();
   private TilemapManager m_TilemapManager;
   private int m_CurrentNodeIndex;
   void Start()
@@ -35,8 +35,7 @@ public class AIPawn : MonoBehaviour
       return;
     }
 
-    Node curNode = m_CurrentPath[m_CurrentNodeIndex];
-    Vector3 targetPos = new Vector3(curNode.centerX, curNode.centerY);
+    Vector3 targetPos = m_CurrentPath[m_CurrentNodeIndex];
     var direction = (targetPos - transform.position).normalized;
 
     transform.position += direction * m_Speed * Time.deltaTime;
@@ -58,8 +57,9 @@ public class AIPawn : MonoBehaviour
     if (m_CurrentPath.Count > 0)
     {
       Node newEndNode = m_TilemapManager.FindNode(dest);
-      // if (newEndNode == m_CurrentPath.Last())
-      if (newEndNode == m_CurrentPath[^1])
+      Vector3 endPos = new Vector3(newEndNode.centerX, newEndNode.centerY);
+      var distance = Vector3.Distance(endPos, m_CurrentPath[^1]);
+      if (distance < 0.1f)
       {
         return;
       }

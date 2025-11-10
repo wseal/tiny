@@ -19,7 +19,7 @@ public class TilemapManager : SingletonManager<TilemapManager>
     m_Pathfinding = new Pathfinding(this);
   }
 
-  public List<Node> FindPath(Vector3 startPos, Vector3 endPos)
+  public List<Vector3> FindPath(Vector3 startPos, Vector3 endPos)
   {
     return m_Pathfinding.FindPath(startPos, endPos);
   }

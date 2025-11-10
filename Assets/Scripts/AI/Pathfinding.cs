@@ -60,7 +60,7 @@ public class Pathfinding
     return null;
   }
 
-  public List<Node> FindPath(Vector3 startPosition, Vector3 destinationPosition)
+  public List<Vector3> FindPath(Vector3 startPosition, Vector3 destinationPosition)
   {
     var startNode = FindNode(startPosition);
     var endNode = FindNode(destinationPosition);
@@ -68,7 +68,7 @@ public class Pathfinding
     if (startNode == null || endNode == null)
     {
       Debug.Log("Can't find the path!");
-      return new List<Node>();
+      return new List<Vector3>();
     }
 
     List<Node> openList = new();
@@ -81,7 +81,7 @@ public class Pathfinding
       var currNode = GetLowestFCostNode(openList);
       if (currNode == endNode)
       {
-        var path = RetracePath(startNode, endNode);
+        var path = RetracePath(startNode, endNode, startPosition);
         Debug.Log("Path Found--->" + string.Join(", ", path));
         return path;
       }
@@ -112,20 +112,20 @@ public class Pathfinding
     }
 
     Debug.Log("No Path Found");
-    return new List<Node>();
+    return new List<Vector3>();
   }
 
-  List<Node> RetracePath(Node startNode, Node endNode)
+  List<Vector3> RetracePath(Node startNode, Node endNode, Vector3 startPos)
   {
-    List<Node> path = new();
+    List<Vector3> path = new();
     Node p = endNode;
     while (p != startNode)
     {
-      path.Add(p);
+      path.Add(new Vector3(p.centerX, p.centerY));
       p = p.parent;
     }
 
-    path.Add(startNode);
+    path.Add(startPos);
     path.Reverse();
 
     return path;
