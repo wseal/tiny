@@ -72,7 +72,7 @@ public class Pathfinding
     }
 
     List<Node> openList = new();
-    HashSet<Node> closeList = new();
+    HashSet<Node> closedList = new();
 
     openList.Add(startNode);
 
@@ -82,18 +82,19 @@ public class Pathfinding
       if (currNode == endNode)
       {
         var path = RetracePath(startNode, endNode, startPosition);
-        Debug.Log("Path Found--->" + string.Join(", ", path));
+        // Debug.Log("Path Found--->" + string.Join(", ", path));
+        ResetNodes(openList, closedList);
         return path;
       }
 
       openList.Remove(currNode);
-      closeList.Add(currNode);
+      closedList.Add(currNode);
 
       var neighbors = GetNeighbors(currNode);
       // Debug.Log("neighbor " + String.Join(", ", neighbors));
       foreach (Node neighbor in neighbors)
       {
-        if (!neighbor.walkable || closeList.Contains(neighbor)) continue;
+        if (!neighbor.walkable || closedList.Contains(neighbor)) continue;
 
         float tentativeG = currNode.gCost + GetDistance(currNode, neighbor);
         if (tentativeG < neighbor.gCost || !openList.Contains(neighbor))
@@ -112,7 +113,25 @@ public class Pathfinding
     }
 
     Debug.Log("No Path Found");
+    ResetNodes(openList, closedList);
     return new List<Vector3>();
+  }
+
+  void ResetNodes(List<Node> openList, HashSet<Node> closedList)
+  {
+    foreach (var node in openList)
+    {
+      node.gCost = 0f;
+      node.hCost = 0f;
+      node.parent = null;
+    }
+
+    foreach (var node in closedList)
+    {
+      node.gCost = 0f;
+      node.hCost = 0f;
+      node.parent = null;
+    }
   }
 
   List<Vector3> RetracePath(Node startNode, Node endNode, Vector3 startPos)
