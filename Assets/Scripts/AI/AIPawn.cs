@@ -1,15 +1,14 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AIPawn : MonoBehaviour
 {
   private float m_Speed = 3f;
 
-  private Vector3? m_Destination;
   private List<Node> m_CurrentPath = new();
   private TilemapManager m_TilemapManager;
   private int m_CurrentNodeIndex;
-  public Vector3? Destination => m_Destination;
   void Start()
   {
     m_TilemapManager = TilemapManager.Get();
@@ -33,7 +32,6 @@ public class AIPawn : MonoBehaviour
     // A star
     if (!IsPathValid())
     {
-      m_Destination = null;
       return;
     }
 
@@ -44,14 +42,31 @@ public class AIPawn : MonoBehaviour
     transform.position += direction * m_Speed * Time.deltaTime;
     if (Vector3.Distance(transform.position, targetPos) <= 0.15f)
     {
-      m_CurrentNodeIndex += 1;
+      if (m_CurrentNodeIndex == m_CurrentPath.Count - 1)
+      {
+        Debug.Log("Destination Reached!");
+        m_CurrentPath = new();
+      }
+      else
+      {
+        m_CurrentNodeIndex += 1;
+      }
     }
   }
   public void SetDestination(Vector3 dest)
   {
+    if (m_CurrentPath.Count > 0)
+    {
+      Node newEndNode = m_TilemapManager.FindNode(dest);
+      // if (newEndNode == m_CurrentPath.Last())
+      if (newEndNode == m_CurrentPath[^1])
+      {
+        return;
+      }
+    }
+
     m_CurrentPath = m_TilemapManager.FindPath(transform.position, dest);
     m_CurrentNodeIndex = 0;
-    m_Destination = dest;
   }
 
   bool IsPathValid()

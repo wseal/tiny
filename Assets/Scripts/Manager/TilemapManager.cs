@@ -24,6 +24,11 @@ public class TilemapManager : SingletonManager<TilemapManager>
     return m_Pathfinding.FindPath(startPos, endPos);
   }
 
+  public Node FindNode(Vector3 position)
+  {
+    return m_Pathfinding.FindNode(position);
+  }
+
   public bool CanWalkAtTile(Vector3Int position)
   {
     return m_WalkableTilemap.HasTile(position) &&

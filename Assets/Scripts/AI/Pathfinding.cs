@@ -47,6 +47,19 @@ public class Pathfinding
     }
   }
 
+  public Node FindNode(Vector3 position)
+  {
+    int x = Mathf.FloorToInt(position.x) - m_GridOffset.x;
+    int y = Mathf.FloorToInt(position.y) - m_GridOffset.y;
+
+    if (x >= 0 && x < m_Width && y >= 0 && y < m_Height)
+    {
+      return m_Grid[x, y];
+    }
+
+    return null;
+  }
+
   public List<Node> FindPath(Vector3 startPosition, Vector3 destinationPosition)
   {
     var startNode = FindNode(startPosition);
@@ -166,18 +179,5 @@ public class Pathfinding
     }
 
     return n;
-  }
-
-  Node FindNode(Vector3 position)
-  {
-    int x = Mathf.FloorToInt(position.x) - m_GridOffset.x;
-    int y = Mathf.FloorToInt(position.y) - m_GridOffset.y;
-
-    if (x >= 0 && x < m_Width && y >= 0 && y < m_Height)
-    {
-      return m_Grid[x, y];
-    }
-
-    return null;
   }
 }
