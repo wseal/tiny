@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -9,9 +10,6 @@ public class TilemapManager : SingletonManager<TilemapManager>
   [SerializeField] private Tilemap m_OverlayTilemap;
   [SerializeField] private Tilemap[] m_UnreachableTilemaps;
 
-  [Header("Testing")]
-  [SerializeField] private Transform m_StartTransform;
-  [SerializeField] private Transform m_DestinationTransform;
   public Tilemap PathfindingTilemap => m_WalkableTilemap;
   private Pathfinding m_Pathfinding;
   public Pathfinding Pathfinding => m_Pathfinding;
@@ -21,12 +19,9 @@ public class TilemapManager : SingletonManager<TilemapManager>
     m_Pathfinding = new Pathfinding(this);
   }
 
-  void Update()
+  public List<Node> FindPath(Vector3 startPos, Vector3 endPos)
   {
-    m_Pathfinding.FindPath(
-      m_StartTransform.position,
-      m_DestinationTransform.position
-      );
+    return m_Pathfinding.FindPath(startPos, endPos);
   }
 
   public bool CanWalkAtTile(Vector3Int position)
