@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Pathfinding
@@ -47,9 +48,48 @@ public class Pathfinding
 
   public void FindPath(Vector3 startPosition, Vector3 destinationPosition)
   {
+    var startNode = FindNode(startPosition);
+    var endNode = FindNode(destinationPosition);
 
+    if (startNode == null || endNode == null)
+    {
+      Debug.Log("Can't find the path!");
+      return;
+    }
 
+    List<Node> openList = new();
+    HashSet<Node> closeList = new();
+
+    openList.Add(startNode);
+
+    while (openList.Count > 0)
+    {
+      var currNode = GetLowestFCostNode(openList);
+      if (currNode == endNode)
+      {
+        Debug.Log("Path Found!!!");
+        return;
+      }
+
+      openList.Remove(currNode);
+      closeList.Add(currNode);
+    }
   }
+
+  Node GetLowestFCostNode(List<Node> openList)
+  {
+    var n = openList[0];
+    foreach (Node node in openList)
+    {
+      if (node.fCost < n.fCost || node.fCost == n.fCost && node.hCost < n.hCost)
+      {
+        n = node;
+      }
+    }
+
+    return n;
+  }
+
 
   Node FindNode(Vector3 position)
   {

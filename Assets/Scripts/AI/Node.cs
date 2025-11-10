@@ -8,6 +8,11 @@ public class Node
   public float centerY;
   public bool walkable;
 
+  public float gCost;
+  public float hCost;
+  public float fCost;
+  public Node parent;
+
   public Node(Vector3Int leftBottom, Vector3 cellSize, bool walkable)
   {
     x = leftBottom.x;
