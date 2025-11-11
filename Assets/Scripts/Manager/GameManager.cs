@@ -85,6 +85,7 @@ public class GameManager : SingletonManager<GameManager>
     m_PlacementProcess.ShowPlacementOutline();
     m_ConfirmationBar.Show(buildAction.GoldCost, buildAction.WoodCost);
     m_ConfirmationBar.SetupHooks(ConfirmBuildPlacement, CancelBuildPlacement);
+    m_CameraController.LockCamera = true;
   }
 
   void DetectClick(Vector2 inputPosition)
@@ -249,6 +250,7 @@ public class GameManager : SingletonManager<GameManager>
       // ActiveUnit.MoveTo(buildPosition);
       // ActiveUnit.SetTask(UnitTask.Build);
       m_PlacementProcess = null;
+      m_CameraController.LockCamera = false;
     }
     else
     {
@@ -267,6 +269,7 @@ public class GameManager : SingletonManager<GameManager>
     m_ConfirmationBar.Hide();
     m_PlacementProcess.Cleanup();
     m_PlacementProcess = null;
+    m_CameraController.LockCamera = false;
   }
 
 
