@@ -7,7 +7,7 @@ public enum UnitState
 
 public enum UnitTask
 {
-  None, Build, Chop, Mine,  Attack
+  None, Build, Chop, Mine, Attack
 }
 
 public abstract class Unit : MonoBehaviour
@@ -30,7 +30,7 @@ public abstract class Unit : MonoBehaviour
   public Unit Target { get; protected set; }
   public ActionSO[] Actions => m_Actions;
   public SpriteRenderer SpriteRenderer => m_SpriteRenderer;
-  public bool HasTarget=> Target != null;
+  public bool HasTarget => Target != null;
   void Awake()
   {
     if (TryGetComponent<Animator>(out var animator))
@@ -41,11 +41,20 @@ public abstract class Unit : MonoBehaviour
     if (TryGetComponent<AIPawn>(out var aiPown))
     {
       m_AIPown = aiPown;
+      m_AIPown.OnNewPositionSelected += TurnToPosition;
     }
 
     m_SpriteRenderer = GetComponent<SpriteRenderer>();
     m_OriginalMaterial = m_SpriteRenderer.material;
     m_HighlightMaterial = Resources.Load<Material>("Materials/Outlines");
+  }
+
+  void OnDestroy()
+  {
+    if (m_AIPown != null)
+    {
+      m_AIPown.OnNewPositionSelected -= TurnToPosition;
+    }
   }
 
   public void SetTask(UnitTask task)
@@ -88,7 +97,7 @@ public abstract class Unit : MonoBehaviour
   {
     // To be implemented in derived classes
   }
-  
+
   protected virtual void OnSetTask(UnitTask oldTask, UnitTask newTask)
   {
     // To be implemented in derived classes
@@ -104,6 +113,12 @@ public abstract class Unit : MonoBehaviour
   protected Collider2D[] RunProximityObjectDetection()
   {
     return Physics2D.OverlapCircleAll(transform.position, m_DetectionRadius);
+  }
+
+  void TurnToPosition(Vector3 newPosition)
+  {
+    var direction = (newPosition - transform.position).normalized;
+    m_SpriteRenderer.flipX = direction.x < 0;
   }
   private void Highlight()
   {
