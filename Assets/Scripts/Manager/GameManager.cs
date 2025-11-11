@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 // using UnityEngine.InputSystem;
 // using UnityEngine.InputSystem.Controls; // 引入新输入系统的命名空间
@@ -22,6 +24,9 @@ public class GameManager : SingletonManager<GameManager>
   [SerializeField] private ParticleSystem m_ConstructionEffectPrefab;
 
   public Unit ActiveUnit = null;
+
+  private List<Unit> m_PlayerUnits = new();
+  private List<Unit> m_EnemyUnits = new();
 
   private CameraController m_CameraController;
   private PlacementProcess m_PlacementProcess;
@@ -73,6 +78,34 @@ public class GameManager : SingletonManager<GameManager>
     // }
   }
 
+  public void RegisterUnit(Unit unit)
+  {
+    if (unit.IsPlayer)
+    {
+      m_PlayerUnits.Add(unit);
+    }
+    else
+    {
+      m_PlayerUnits.Add(unit);
+    }
+
+    Debug.Log("Player Units:" + string.Join(", ", m_PlayerUnits.Select(unit => unit.gameObject.name)));
+    Debug.Log("Enemy Units:" + string.Join(", ", m_EnemyUnits.Select(unit => unit.gameObject.name)));
+
+  }
+
+  public void UnregisterUnit(Unit unit)
+  {
+    if (unit.IsPlayer)
+    {
+      m_PlayerUnits.Remove(unit);
+    }
+    else
+    {
+      m_PlayerUnits.Remove(unit);
+    }
+  }
+
   public void StartBuildAction(BuildActionSO buildAction)
   {
     if (m_PlacementProcess != null) return;
@@ -101,7 +134,14 @@ public class GameManager : SingletonManager<GameManager>
     RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
     if (HasClickedOnUnit(hit, out var unit))
     {
-      HandleClickOnUnit(unit);
+      if (unit.IsPlayer)
+      {
+        HandleClickOnPlayerUnit(unit);
+      }
+      else
+      {
+
+      }
     }
     else
     {
@@ -130,7 +170,7 @@ public class GameManager : SingletonManager<GameManager>
     }
   }
 
-  void HandleClickOnUnit(Unit unit)
+  void HandleClickOnPlayerUnit(Unit unit)
   {
     if (HasActiveUnit)
     {

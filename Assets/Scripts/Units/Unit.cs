@@ -18,6 +18,7 @@ public abstract class Unit : MonoBehaviour
   // [SerializeField]
   // private Material m_HighlightMaterial; // set from unity
   public bool IsTargeted;
+  protected GameManager m_GameManager;
   protected Animator m_Animator;
   protected AIPawn m_AIPown;
 
@@ -28,9 +29,17 @@ public abstract class Unit : MonoBehaviour
   public UnitState CurrentState { get; protected set; } = UnitState.Idle;
   public UnitTask CurrentTask { get; protected set; } = UnitTask.None;
   public Unit Target { get; protected set; }
+  public virtual bool IsPlayer => true;
+  public virtual bool IsBuilding => false;
   public ActionSO[] Actions => m_Actions;
   public SpriteRenderer SpriteRenderer => m_SpriteRenderer;
   public bool HasTarget => Target != null;
+
+  protected virtual void Start()
+  {
+    RegisterUnit();
+  }
+
   void Awake()
   {
     if (TryGetComponent<Animator>(out var animator))
@@ -44,6 +53,7 @@ public abstract class Unit : MonoBehaviour
       m_AIPown.OnNewPositionSelected += TurnToPosition;
     }
 
+    m_GameManager = GameManager.Get();
     m_SpriteRenderer = GetComponent<SpriteRenderer>();
     m_OriginalMaterial = m_SpriteRenderer.material;
     m_HighlightMaterial = Resources.Load<Material>("Materials/Outlines");
@@ -55,6 +65,7 @@ public abstract class Unit : MonoBehaviour
     {
       m_AIPown.OnNewPositionSelected -= TurnToPosition;
     }
+    UnregisterUnit();
   }
 
   public void SetTask(UnitTask task)
@@ -108,6 +119,16 @@ public abstract class Unit : MonoBehaviour
   {
     // To be implemented in derived classes
     CurrentState = newState;
+  }
+
+  protected virtual void RegisterUnit()
+  {
+    m_GameManager.RegisterUnit(this);
+  }
+
+  protected virtual void UnregisterUnit()
+  {
+    m_GameManager.UnregisterUnit(this);
   }
 
   protected Collider2D[] RunProximityObjectDetection()

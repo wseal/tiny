@@ -64,27 +64,22 @@ public class TilemapManager : SingletonManager<TilemapManager>
     int buildingLayerMask = 1 << LayerMask.NameToLayer("Building");
 
     Collider2D[] colliders = Physics2D.OverlapPointAll(worldPosition, buildingLayerMask);
-    return colliders.Length > 0;
+    foreach (var collider in colliders)
+    {
+      // if (collider.gameObject.tag == "Building") return true;
+      if (collider.CompareTag("Building")) return true;
+    }
+
+    return false;
   }
 
   public bool IsBlockedByGameobject(Vector3Int tilePosition)
   {
     Vector3 tileSize = m_WalkableTilemap.cellSize;
-    Collider2D[] colliders = Physics2D.OverlapBoxAll(tilePosition + tileSize / 2, tileSize * 0.95f, 0f);
+    int unitMask = 1 << LayerMask.NameToLayer("Unit");
+    Collider2D[] colliders = Physics2D.OverlapBoxAll(tilePosition + tileSize / 2, tileSize * 0.95f, 0f, unitMask);
 
-    foreach (var collider in colliders)
-    {
-      var layer = collider.gameObject.layer;
-      if (layer == LayerMask.NameToLayer("Player") || layer == LayerMask.NameToLayer("Building"))
-      {
-        return true;
-      }
-      // if (collider.gameObject.CompareTag("Building") || collider.gameObject.CompareTag("Unit"))
-      // {
-      //   return true;
-      // }
-    }
-    return false;
+    return colliders.Length > 0;
   }
 
   public void SetTileOverlay(Vector3Int position, Tile tile)
