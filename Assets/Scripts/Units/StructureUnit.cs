@@ -1,5 +1,7 @@
 
 
+using UnityEngine;
+
 public class StructureUnit : Unit
 {
   private BuildingProcess m_BuildingProcess;
@@ -14,19 +16,44 @@ public class StructureUnit : Unit
     }
   }
 
-  public void OnConstructionComplete() => m_BuildingProcess = null;
-  
+  void OnDestroy()
+  {
+    UpdateWalkablity();
+  }
+
+  public void OnConstructionComplete()
+  {
+    m_BuildingProcess = null;
+    UpdateWalkablity();
+  }
+
   public void RegisterProcess(BuildingProcess process)
   {
     m_BuildingProcess = process;
   }
-  
+
   public void AssignWorkerToBuildProcess(WorkerUnit worker)
   {
     m_BuildingProcess?.AddWorker(worker);
   }
- public void UnassignWorkerFromBuildProcess()
+  public void UnassignWorkerFromBuildProcess()
   {
     m_BuildingProcess?.RemoveWorker();
+  }
+
+  void UpdateWalkablity()
+  {
+    int buildingWidthInTiles = 6;
+    int buildingHeightInTiles = 6;
+
+    float halfWidth = buildingWidthInTiles / 2;
+    float halfHeight = buildingHeightInTiles / 2;
+
+    Vector3Int startPos = new Vector3Int(
+      Mathf.FloorToInt(transform.position.x - halfWidth),
+      Mathf.FloorToInt(transform.position.y - halfHeight),
+      0);
+
+    TilemapManager.Get().UpdateNodesInArea(startPos, buildingWidthInTiles, buildingHeightInTiles);
   }
 }

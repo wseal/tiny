@@ -76,6 +76,9 @@ public class Pathfinding
 
     openList.Add(startNode);
 
+    Node closestNode = startNode;
+    var closestDistanceToEnd = GetDistance(closestNode, endNode);
+
     while (openList.Count > 0)
     {
       var currNode = GetLowestFCostNode(openList);
@@ -99,10 +102,17 @@ public class Pathfinding
         float tentativeG = currNode.gCost + GetDistance(currNode, neighbor);
         if (tentativeG < neighbor.gCost || !openList.Contains(neighbor))
         {
+          var distance = GetDistance(neighbor, endNode);
           neighbor.gCost = tentativeG;
-          neighbor.hCost = GetDistance(neighbor, endNode);
+          neighbor.hCost = distance;
           neighbor.fCost = neighbor.gCost + neighbor.hCost;
           neighbor.parent = currNode;
+
+          if (distance < closestDistanceToEnd)
+          {
+            closestNode = neighbor;
+            closestDistanceToEnd = distance;
+          }
 
           if (!openList.Contains(neighbor))
           {
@@ -112,9 +122,33 @@ public class Pathfinding
       }
     }
 
-    Debug.Log("No Path Found");
+    // Debug.Log("No Path Found");
+    var unFinishedPath = RetracePath(startNode, closestNode, startPosition);
     ResetNodes(openList, closedList);
-    return new List<Vector3>();
+    return unFinishedPath;
+  }
+
+  public void UpdateNodesInArea(Vector3Int startPos, int widht, int height)
+  {
+    for (int i = 0; i < widht; i++)
+    {
+      for (int j = 0; j < height; j++)
+      {
+        int x = startPos.x + i;
+        int y = startPos.y + j;
+
+        int gridX = x - m_GridOffset.x;
+        int gridY = x - m_GridOffset.y;
+
+        if (gridX >= 0 && gridX < m_Width && gridY >= 0 && gridY < m_Height)
+        {
+          Node node = m_Grid[gridX, gridY];
+          Vector3Int cellPosition = new Vector3Int(node.x, node.y);
+          node.walkable = m_TilemapManager.CanWalkAtTile(cellPosition);
+        }
+
+      }
+    }
   }
 
   void ResetNodes(List<Node> openList, HashSet<Node> closedList)
