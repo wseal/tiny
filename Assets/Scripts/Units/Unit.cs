@@ -15,6 +15,7 @@ public abstract class Unit : MonoBehaviour
   [SerializeField] private ActionSO[] m_Actions;
   [SerializeField] protected float m_DetectionRadius = 3.0f;
   [SerializeField] protected float m_UnitDetectionCheckRate = 0.5f;
+  [SerializeField] protected float m_AttackRange = 1f;
 
   // [SerializeField]
   // private Material m_HighlightMaterial; // set from unity
@@ -147,6 +148,11 @@ public abstract class Unit : MonoBehaviour
     return false;
   }
 
+  protected bool IsTargetInRange(Transform target)
+  {
+    return Vector3.Distance(target.transform.position, transform.position) <= m_AttackRange;
+  }
+
   protected Collider2D[] RunProximityObjectDetection()
   {
     return Physics2D.OverlapCircleAll(transform.position, m_DetectionRadius);
@@ -171,5 +177,8 @@ public abstract class Unit : MonoBehaviour
   {
     Gizmos.color = new Color(0, 0, 1, 0.4f);
     Gizmos.DrawSphere(transform.position, m_DetectionRadius);
+
+    Gizmos.color = new Color(1, 0, 1, 0.4f);
+    Gizmos.DrawSphere(transform.position, m_AttackRange);
   }
 }
