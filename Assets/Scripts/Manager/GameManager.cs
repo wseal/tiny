@@ -86,7 +86,7 @@ public class GameManager : SingletonManager<GameManager>
     }
     else
     {
-      m_PlayerUnits.Add(unit);
+      m_EnemyUnits.Add(unit);
     }
 
     Debug.Log("Player Units:" + string.Join(", ", m_PlayerUnits.Select(unit => unit.gameObject.name)));
@@ -104,6 +104,25 @@ public class GameManager : SingletonManager<GameManager>
     {
       m_PlayerUnits.Remove(unit);
     }
+  }
+
+  public Unit FindClosestUnit(Vector3 originPosition, float maxDistance, bool isPlayer)
+  {
+    List<Unit> units = isPlayer ? m_PlayerUnits : m_EnemyUnits;
+    Unit closestUnit = null;
+    float closestDistance = float.MaxValue;
+
+    foreach (Unit unit in units)
+    {
+      float distance = (unit.transform.position - originPosition).magnitude;
+      if (distance < maxDistance && distance < closestDistance)
+      {
+        closestUnit = unit;
+        closestDistance = distance;
+      }
+    }
+
+    return closestUnit;
   }
 
   public void StartBuildAction(BuildActionSO buildAction)
