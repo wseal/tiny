@@ -53,4 +53,10 @@ public class HumanoidUnit : Unit
   {
     m_Animator?.SetFloat("Speed", Mathf.Clamp01(m_SmoothedSpeed));
   }
+
+  protected override void PerformAttackAnimation()
+  {
+    // base.PerformAttackAnimation();
+    
+  }
 }

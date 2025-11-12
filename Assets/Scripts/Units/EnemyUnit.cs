@@ -17,7 +17,7 @@ public class EnemyUnit : HumanoidUnit
                     if (IsTargetInRange(Target.transform))
                     {
                         SetState(UnitState.Attacking);
-                        // stop movement
+                        StopMovement();
                     }
                     else
                     {
@@ -41,7 +41,8 @@ public class EnemyUnit : HumanoidUnit
                 {
                     if (IsTargetInRange(Target.transform))
                     {
-                        Debug.Log("Attacking");
+                        // Debug.Log("Attacking");
+                        TryAttackCurrentTarget();
                     }
                     else
                     {

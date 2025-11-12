@@ -16,6 +16,7 @@ public abstract class Unit : MonoBehaviour
   [SerializeField] protected float m_DetectionRadius = 3.0f;
   [SerializeField] protected float m_UnitDetectionCheckRate = 0.5f;
   [SerializeField] protected float m_AttackRange = 1f;
+  [SerializeField] protected float m_AutoAttackFrequency = 1.5f;
 
   // [SerializeField]
   // private Material m_HighlightMaterial; // set from unity
@@ -28,6 +29,7 @@ public abstract class Unit : MonoBehaviour
   protected Material m_OriginalMaterial;
   protected Material m_HighlightMaterial; // load from resources
   protected float m_NextUnitDetectionTime;
+  protected float m_NextAutoAttackTime;
 
   public UnitState CurrentState { get; protected set; } = UnitState.Idle;
   public UnitTask CurrentTask { get; protected set; } = UnitTask.None;
@@ -107,6 +109,11 @@ public abstract class Unit : MonoBehaviour
     IsTargeted = false;
   }
 
+  public void StopMovement()
+  {
+    m_AIPown.Stop();
+  }
+
   protected virtual void OnSetDestination(Vector3 destination)
   {
     // To be implemented in derived classes
@@ -146,6 +153,22 @@ public abstract class Unit : MonoBehaviour
 
     foe = null;
     return false;
+  }
+
+  protected virtual bool TryAttackCurrentTarget()
+  {
+    if (Time.time >= m_NextAutoAttackTime)
+    {
+      m_NextAutoAttackTime += m_AutoAttackFrequency;
+      PerformAttackAnimation();
+      return true;
+    }
+    return false;
+  }
+
+  protected virtual void PerformAttackAnimation()
+  {
+
   }
 
   protected bool IsTargetInRange(Transform target)
