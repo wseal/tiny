@@ -14,6 +14,7 @@ public abstract class Unit : MonoBehaviour
 {
   [SerializeField] private ActionSO[] m_Actions;
   [SerializeField] protected float m_DetectionRadius = 3.0f;
+  [SerializeField] protected float m_UnitDetectionCheckRate = 0.5f;
 
   // [SerializeField]
   // private Material m_HighlightMaterial; // set from unity
@@ -25,6 +26,7 @@ public abstract class Unit : MonoBehaviour
   protected SpriteRenderer m_SpriteRenderer;
   protected Material m_OriginalMaterial;
   protected Material m_HighlightMaterial; // load from resources
+  protected float m_NextUnitDetectionTime;
 
   public UnitState CurrentState { get; protected set; } = UnitState.Idle;
   public UnitTask CurrentTask { get; protected set; } = UnitTask.None;
@@ -133,8 +135,16 @@ public abstract class Unit : MonoBehaviour
 
   protected virtual bool TryFindClosestFoe(out Unit foe)
   {
-    foe = m_GameManager.FindClosestUnit(transform.position, m_DetectionRadius, !IsPlayer);
-    return foe != null;
+    if (Time.time >= m_NextUnitDetectionTime)
+    {
+      m_NextUnitDetectionTime = Time.time + m_UnitDetectionCheckRate;
+
+      foe = m_GameManager.FindClosestUnit(transform.position, m_DetectionRadius, !IsPlayer);
+      return foe != null;
+    }
+
+    foe = null;
+    return false;
   }
 
   protected Collider2D[] RunProximityObjectDetection()
