@@ -108,17 +108,18 @@ public class GameManager : SingletonManager<GameManager>
 
   public Unit FindClosestUnit(Vector3 originPosition, float maxDistance, bool isPlayer)
   {
+    float maxDistanceSqr = maxDistance * maxDistance;
     List<Unit> units = isPlayer ? m_PlayerUnits : m_EnemyUnits;
     Unit closestUnit = null;
-    float closestDistance = float.MaxValue;
+    float closestDistanceSqr = float.MaxValue;
 
     foreach (Unit unit in units)
     {
-      float distance = (unit.transform.position - originPosition).magnitude;
-      if (distance < maxDistance && distance < closestDistance)
+      float sqrDistance = (unit.transform.position - originPosition).sqrMagnitude;
+      if (sqrDistance < maxDistanceSqr && sqrDistance < closestDistanceSqr)
       {
         closestUnit = unit;
-        closestDistance = distance;
+        closestDistanceSqr = maxDistanceSqr;
       }
     }
 
