@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class HumanoidUnit : Unit
@@ -21,6 +22,7 @@ public class HumanoidUnit : Unit
 
   void Update()
   {
+    if (CurrentState == UnitState.Dead) return;
     UpdateVelocity();
     UpdateBehaviour();
     UpdateMovementAnimation();
@@ -67,5 +69,19 @@ public class HumanoidUnit : Unit
     {
       m_Animator?.SetTrigger(direction.y > 0 ? "AttackUp" : "AttackDown");
     }
+  }
+
+  protected override void RunDeadEffect()
+  {
+    // base.RunDeadEffect();
+    m_Animator?.SetTrigger("Dead");
+    StartCoroutine(LateObjectDestroy(1.2f));
+  }
+
+  private IEnumerator LateObjectDestroy(float delay)
+  {
+    yield return new WaitForSeconds(delay);
+
+    Destroy(gameObject);
   }
 }
