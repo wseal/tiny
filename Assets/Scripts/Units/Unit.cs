@@ -159,7 +159,7 @@ public abstract class Unit : MonoBehaviour
   {
     if (Time.time >= m_NextAutoAttackTime)
     {
-      m_NextAutoAttackTime += m_AutoAttackFrequency;
+      m_NextAutoAttackTime = Time.time + m_AutoAttackFrequency;
       PerformAttackAnimation();
       return true;
     }

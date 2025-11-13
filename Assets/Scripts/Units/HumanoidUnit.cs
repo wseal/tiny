@@ -56,7 +56,16 @@ public class HumanoidUnit : Unit
 
   protected override void PerformAttackAnimation()
   {
-    // base.PerformAttackAnimation();
-    
+    Vector3 direction = (Target.transform.position - transform.position).normalized;
+    if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+    {
+      // Horizontal attack
+      m_SpriteRenderer.flipX = direction.x < 0;
+      m_Animator?.SetTrigger("AttackHorizontal");
+    }
+    else
+    {
+      m_Animator?.SetTrigger(direction.y > 0 ? "AttackUp" : "AttackDown");
+    }
   }
 }
