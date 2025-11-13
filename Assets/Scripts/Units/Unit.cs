@@ -32,6 +32,7 @@ public abstract class Unit : MonoBehaviour
   protected SpriteRenderer m_SpriteRenderer;
   protected Material m_OriginalMaterial;
   protected Material m_HighlightMaterial; // load from resources
+  protected CapsuleCollider2D m_Collider;
   protected float m_NextUnitDetectionTime;
   protected float m_NextAutoAttackTime;
 
@@ -62,6 +63,7 @@ public abstract class Unit : MonoBehaviour
       m_AIPown.OnNewPositionSelected += TurnToPosition;
     }
 
+    m_Collider = GetComponent<CapsuleCollider2D>();
     m_GameManager = GameManager.Get();
     m_SpriteRenderer = GetComponent<SpriteRenderer>();
     m_OriginalMaterial = m_SpriteRenderer.material;
@@ -116,6 +118,13 @@ public abstract class Unit : MonoBehaviour
   public void StopMovement()
   {
     m_AIPown.Stop();
+  }
+
+  public Vector3 GetTopPosition()
+  {
+    if (m_Collider == null) return transform.position;
+
+    return transform.position + Vector3.up * m_Collider.size.y / 2;
   }
 
   protected virtual void OnSetDestination(Vector3 destination)
@@ -179,7 +188,13 @@ public abstract class Unit : MonoBehaviour
   protected void TakeDamage(int damage, Unit damager)
   {
     // To be implemented in derived classes
-    Debug.Log($"{this.gameObject.name} took: {damage} point from {damager.gameObject.name}");
+    // Debug.Log($"{this.gameObject.name} took: {damage} point from {damager.gameObject.name}");
+
+    m_GameManager.ShowTextPopup(
+      damage.ToString(),
+      GetTopPosition(),
+      Color.red
+      );
   }
   protected IEnumerator DelayDamage(float delay, int damage, Unit target)
   {
