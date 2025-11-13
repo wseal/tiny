@@ -1434,7 +1434,7 @@ Tilemap:
       - {fileID: 7752229987998269982, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: -4710801888167562894, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: 6853023835892009477, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -11, y: -10, z: 0}
@@ -1779,7 +1779,7 @@ Tilemap:
       - {fileID: 7752229987998269982, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: -4710801888167562894, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: 6853023835892009477, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
-      m_AnimationSpeed: 10.000001
+      m_AnimationSpeed: 10
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 12, y: -10, z: 0}
@@ -1959,7 +1959,7 @@ Tilemap:
       - {fileID: 7752229987998269982, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: -4710801888167562894, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: 6853023835892009477, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 18, y: -7, z: 0}
@@ -2364,7 +2364,7 @@ Tilemap:
       - {fileID: 7752229987998269982, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: -4710801888167562894, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: 6853023835892009477, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -19, y: 7, z: 0}
@@ -2559,7 +2559,7 @@ Tilemap:
       - {fileID: 7752229987998269982, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: -4710801888167562894, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: 6853023835892009477, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -8, y: 8, z: 0}
@@ -2844,7 +2844,7 @@ Tilemap:
       - {fileID: 7752229987998269982, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: -4710801888167562894, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
       - {fileID: 6853023835892009477, guid: 337a3c67fe20a4e6d94c0296890c6218, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 11, y: 8, z: 0}
@@ -3699,7 +3699,7 @@ Tilemap:
       - {fileID: -2417548612333543299, guid: ff70d6595685a4d79bb951b3d5e4b68b, type: 3}
       - {fileID: 2648045286040330466, guid: ff70d6595685a4d79bb951b3d5e4b68b, type: 3}
       - {fileID: 2763439710183631591, guid: ff70d6595685a4d79bb951b3d5e4b68b, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -8, y: -12, z: 0}
@@ -3924,7 +3924,7 @@ Tilemap:
       - {fileID: -3089720072195947750, guid: 7d5142cddf6b54a92a3d7a152216c34f, type: 3}
       - {fileID: 6910502441185169791, guid: 7d5142cddf6b54a92a3d7a152216c34f, type: 3}
       - {fileID: -8412000465415408234, guid: 7d5142cddf6b54a92a3d7a152216c34f, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 19, y: -6, z: 0}
@@ -3954,7 +3954,7 @@ Tilemap:
       - {fileID: -2417548612333543299, guid: ff70d6595685a4d79bb951b3d5e4b68b, type: 3}
       - {fileID: 2648045286040330466, guid: ff70d6595685a4d79bb951b3d5e4b68b, type: 3}
       - {fileID: 2763439710183631591, guid: ff70d6595685a4d79bb951b3d5e4b68b, type: 3}
-      m_AnimationSpeed: 10.000001
+      m_AnimationSpeed: 10
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -22, y: -4, z: 0}
@@ -4209,7 +4209,7 @@ Tilemap:
       - {fileID: 3976394749612131340, guid: 2e5293bac18dc46f28305a78a1aebbbb, type: 3}
       - {fileID: -5443729802455617797, guid: 2e5293bac18dc46f28305a78a1aebbbb, type: 3}
       - {fileID: 5451828946050965503, guid: 2e5293bac18dc46f28305a78a1aebbbb, type: 3}
-      m_AnimationSpeed: 10.000001
+      m_AnimationSpeed: 10
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -1, y: 9, z: 0}
@@ -12147,6 +12147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   m_PointToMovePrefab: {fileID: 6154037487318169881, guid: dc59ea65e134746b786a065acb8563b1, type: 3}
   m_PointToBuildPrefab: {fileID: 6154037487318169881, guid: fcb0d9123a0004206926af94b36b0aff, type: 3}
+  m_PointToAttackPrefab: {fileID: 6154037487318169881, guid: 7524bf73711016843a8c53a1455e124d, type: 3}
   m_ActionBar: {fileID: 1706504491}
   m_ConfirmationBar: {fileID: 1354641094}
   m_TextPopupController: {fileID: 1882088262}
@@ -26051,7 +26052,7 @@ GameObject:
   - component: {fileID: 1384045435}
   - component: {fileID: 1384045438}
   - component: {fileID: 1384045437}
-  - component: {fileID: 1384045436}
+  - component: {fileID: 1384045439}
   m_Layer: 6
   m_Name: Warrior
   m_TagString: Untagged
@@ -26154,28 +26155,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1384045436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1384045432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8720fcc653ed745e1a19e0b5d0776e60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HumanoidUnit
-  m_Actions: []
-  m_DetectionRadius: 3
-  m_UnitDetectionCheckRate: 0.5
-  m_AttackRange: 1
-  m_AutoAttackFrequency: 1.5
-  m_AutoAttackDamageDelay: 0.5
-  m_AutoAttackDamage: 7
-  m_Health: 17
-  m_DamageFlashColor: {r: 0.9748427, g: 0.49421045, b: 0.48129022, a: 1}
-  IsTargeted: 0
 --- !u!114 &1384045437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26225,6 +26204,28 @@ CapsuleCollider2D:
   m_Offset: {x: 0.09348059, y: 0.120188594}
   m_Size: {x: 1.5310297, y: 1.7446983}
   m_Direction: 0
+--- !u!114 &1384045439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384045432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e062de11af8cba84d8b954e87cfc297b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoldierUnit
+  m_Actions: []
+  m_DetectionRadius: 6
+  m_UnitDetectionCheckRate: 0.5
+  m_AttackRange: 1
+  m_AutoAttackFrequency: 1.5
+  m_AutoAttackDamageDelay: 0.5
+  m_AutoAttackDamage: 10
+  m_Health: 24
+  m_DamageFlashColor: {r: 1, g: 0.65, b: 0.65, a: 1}
+  IsTargeted: 0
 --- !u!1001 &1475452154
 PrefabInstance:
   m_ObjectHideFlags: 0

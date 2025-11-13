@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum UnitState
@@ -21,7 +22,7 @@ public abstract class Unit : MonoBehaviour
   [SerializeField] protected float m_AutoAttackDamageDelay = 0.5f;
   [SerializeField] protected int m_AutoAttackDamage = 7;
   [SerializeField] protected int m_Health = 100;
-  [SerializeField] protected Color m_DamageFlashColor = new Color(1f, 0.27f, 0.25f, 1f);
+  [SerializeField] protected Color m_DamageFlashColor = new Color(1f, 0.65f, 0.65f, 1f);
 
 
   // [SerializeField]
@@ -65,6 +66,7 @@ public abstract class Unit : MonoBehaviour
     {
       m_AIPown = aiPown;
       m_AIPown.OnNewPositionSelected += TurnToPosition;
+      m_AIPown.OnDestinationReached += OnDestinationReached;
     }
 
     m_Collider = GetComponent<CapsuleCollider2D>();
@@ -81,6 +83,7 @@ public abstract class Unit : MonoBehaviour
     if (m_AIPown != null)
     {
       m_AIPown.OnNewPositionSelected -= TurnToPosition;
+      m_AIPown.OnDestinationReached -= OnDestinationReached;
     }
     // UnregisterUnit();
   }
@@ -137,6 +140,8 @@ public abstract class Unit : MonoBehaviour
   {
     // To be implemented in derived classes
   }
+
+  protected virtual void OnDestinationReached() { }
 
   protected virtual void OnSetTask(UnitTask oldTask, UnitTask newTask)
   {
@@ -272,6 +277,7 @@ public abstract class Unit : MonoBehaviour
     var direction = (newPosition - transform.position).normalized;
     m_SpriteRenderer.flipX = direction.x < 0;
   }
+
   private void Highlight()
   {
     m_SpriteRenderer.material = m_HighlightMaterial;
